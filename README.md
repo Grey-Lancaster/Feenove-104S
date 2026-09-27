@@ -30,11 +30,11 @@ the 2.8" board's ILI9341 config.
 | 8.1 | `08_BLE_USART/` | BLE UART bridge | Ported (identical to FNK0104B) |
 | 8.2 | `08_BLE_RGB/` | BLE-controlled RGB LED | Ported, with one pin correction — see chapter README |
 | 9.1 | `09_WiFi_Web_LED/` | WiFi web server LED control | Ported (identical to FNK0104B) |
-| 10.1 | `10_TFT_Rainbow/` | Raw TFT_eSPI drawing/fonts | Not yet ported (genuine per-board layout, 320x480 vs 240x320) |
+| 10.1 | `10_TFT_Rainbow/` | Raw TFT_eSPI drawing/fonts | Ported (genuine per-board layout, 480x320 landscape vs 320x240) — not yet flashed |
 | 10.2 | `10_Flash_Jpg_DMA/` | JPEG decode from flash to TFT | **Ported and confirmed working on hardware** — displays "The Grey Fox" logo |
 | 11.1 | `11_Touch/` | FT6336U capacitive touch (raw) | Ported (identical to FNK0104B) |
-| 12.1 | `12_TFT_Touch_Draw/` | Touch-driven drawing on TFT | Not yet ported (genuine per-board layout) |
-| 13.1 | `13_LVGL/` | Baseline LVGL setup | Not yet ported (genuine per-board resolution) |
+| 12.1 | `12_TFT_Touch_Draw/` | Touch-driven drawing on TFT | Ported (genuine per-board layout) — not yet flashed |
+| 13.1 | `13_LVGL/` | Baseline LVGL setup | Ported (genuine per-board resolution) — not yet flashed |
 | 14.1 | `14_Lvgl_Picture/` | LVGL image viewer from SD card | Not yet ported (genuine per-board layout + image asset) |
 | 15.1 | `15_Lvgl_Timer/` | LVGL chronograph/stopwatch UI | Not yet ported (genuine per-board layout) |
 | 16.1 | `16_Lvgl_WS2812/` | LVGL-driven WS2812 color picker | Not yet ported (genuine per-board layout) |
