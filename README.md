@@ -40,18 +40,22 @@ the 2.8" board's ILI9341 config.
 | 16.1 | `16_Lvgl_WS2812/` | LVGL-driven WS2812 color picker | Ported (genuine per-board layout) — not yet flashed |
 | 17.1 | `17_Lvgl_Music/` | LVGL music player UI | Ported (genuine per-board layout, incl. its documented audio bugfixes) — not yet flashed |
 | 17.2 | `17_Lvgl_Echo/` | LVGL mic record + playback (unofficial) | Ported (no per-board layout needed — screen uses relative LVGL alignment) — not yet flashed |
-| 18.1 | `18_Lvgl_Multifunctionality/` | All LVGL screens combined | Not yet ported (genuine per-board layout, many files) |
+| 18.1 | `18_Lvgl_Multifunctionality/` | All LVGL screens combined | Ported (genuine per-board layout, many files; new 320x320 fallback logo image) — not yet flashed |
 | 19.1 | `19_LVGL_Arduino/` | Stock LVGL widgets demo | Ported (genuine per-board resolution) — not yet flashed |
 
-Chapters marked "identical to FNK0104B" have no display/resolution
-dependency and cross-checked byte-for-byte against Freenove's official
-per-board `#ifdef` branches: the FNK0104S and FNK0104B code paths are
-provably the same for these (only the FNK0104N/3.5" variant differs), so
-these were ported by direct copy. The still-outstanding chapters all touch
-the TFT/LVGL and genuinely differ (320x480 vs 240x320 layout, rotation,
-image assets) — these are being ported one at a time, each compiled and
-then verified on real hardware before moving to the next, the same way
-chapter 10.2 was.
+All 23 chapters are now ported. Chapters marked "identical to FNK0104B"
+have no display/resolution dependency and were cross-checked byte-for-byte
+against Freenove's official per-board `#ifdef` branches: the FNK0104S and
+FNK0104B code paths are provably the same for these (only the
+FNK0104N/3.5" variant differs), so these were ported by direct copy. The
+rest all touch the TFT/LVGL and genuinely differ (320x480 vs 240x320
+layout, rotation, image assets) — those layouts were extracted from
+Freenove's own official FNK0104S-specific code where it exists, or
+adapted directly where it doesn't (chapter 17.2).
+
+Only chapter 10.2 has actually been flashed and confirmed working on real
+FNK0104S hardware so far — everything else compiles against the same
+board config but hasn't been verified on the physical board yet.
 
 ## Shared across chapters
 
