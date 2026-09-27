@@ -12,6 +12,22 @@ static bool chronograph_timer_state= false;
 static uint32_t timer_last_millis=0;
 static uint32_t timer_current_millis=0;
 
+// Separate fixed-width label per numeric field (HH/MM/SS/CS), rather than
+// one big auto-sizing label for the whole "00:00:00:00" string. Even with
+// that string zero-padded to a constant character COUNT, LVGL still
+// re-measures and re-centers the rendered text on every lv_label_set_text()
+// call -- and this project's font (LVGL's default, a proportional font, no
+// tabular/fixed-width digits) doesn't give every digit the same pixel
+// advance width, so the *measured* width still wobbles by a few pixels
+// tick to tick even at constant length, and centered text re-anchors on
+// that wobble every redraw. Giving each field its own small fixed-width,
+// center-aligned label bounds that wobble to within that one field instead
+// of shifting the whole row.
+static lv_obj_t *chronograph_label_hh = NULL;
+static lv_obj_t *chronograph_label_mm = NULL;
+static lv_obj_t *chronograph_label_ss = NULL;
+static lv_obj_t *chronograph_label_cs = NULL;
+
 static void chronograph_imgbtn_home_event_handler(lv_event_t *e)
 {
   lv_event_code_t code = lv_event_get_code(e);
@@ -93,7 +109,10 @@ static void chronograph_imgbtn_stop_event_handler(lv_event_t *e)
         chronograph_timer_seconds = 0;
         chronograph_timer_minutes = 0;
         chronograph_timer_hours = 0;
-        lv_label_set_text(guider_chronograph_ui.chronograph_label_show, "00:00:00:00");
+        lv_label_set_text(chronograph_label_hh, "00");
+        lv_label_set_text(chronograph_label_mm, "00");
+        lv_label_set_text(chronograph_label_ss, "00");
+        lv_label_set_text(chronograph_label_cs, "00");
     }
     break;
     default:
@@ -102,7 +121,7 @@ static void chronograph_imgbtn_stop_event_handler(lv_event_t *e)
 }
 static void chronograph_timer_event_handler(lv_timer_t *timer)
 {
-  char buf[256];
+  char buf[8];
   timer_current_millis = millis();
   if(timer_current_millis > timer_last_millis)
   {
@@ -128,13 +147,17 @@ static void chronograph_timer_event_handler(lv_timer_t *timer)
   {
     chronograph_timer_hours = 0;
   }
-  // Zero-padded to a fixed width (was "%d:%d:%d:%2d") -- unpadded fields
-  // change the string's pixel width every time a field crosses a digit
-  // boundary (e.g. 9 -> 10 seconds), and since the label below is only
-  // centered once at setup (lv_obj_center), a width change shifts the
-  // whole label sideways instead of just changing digits in place.
-  lv_snprintf(buf, sizeof(buf), "%02d:%02d:%02d:%02d", chronograph_timer_hours, chronograph_timer_minutes, chronograph_timer_seconds, chronograph_timer_milliseconds/10);
-  lv_label_set_text(guider_chronograph_ui.chronograph_label_show, buf);
+  // Each field updated independently (in its own fixed-width label) rather
+  // than rebuilding one big string -- see the field labels' declaration
+  // above for why.
+  lv_snprintf(buf, sizeof(buf), "%02d", chronograph_timer_hours);
+  lv_label_set_text(chronograph_label_hh, buf);
+  lv_snprintf(buf, sizeof(buf), "%02d", chronograph_timer_minutes);
+  lv_label_set_text(chronograph_label_mm, buf);
+  lv_snprintf(buf, sizeof(buf), "%02d", chronograph_timer_seconds);
+  lv_label_set_text(chronograph_label_ss, buf);
+  lv_snprintf(buf, sizeof(buf), "%02d", chronograph_timer_milliseconds/10);
+  lv_label_set_text(chronograph_label_cs, buf);
 }
 
 // Parameter configuration function on the chronograph screen
@@ -169,23 +192,55 @@ void setup_scr_chronograph(lvgl_chronograph_ui *ui)
   lv_obj_remove_style_all(ui->chronograph_btn_show);
   lv_obj_set_size(ui->chronograph_btn_show, (screen_width - 40), 40);
   lv_obj_align_to(ui->chronograph_btn_show, ui->chronograph_home, LV_ALIGN_OUT_BOTTOM_MID, 0, (screen_height - 180) / 4);
-  ui->chronograph_label_show = lv_label_create(ui->chronograph_btn_show);
-  lv_label_set_text(ui->chronograph_label_show, "00:00:00:00");
-  // Fixed width + centered text alignment, instead of relying on
-  // lv_obj_center() alone: a plain label auto-sizes to its text, so
-  // centering it once at setup only centers *that* width -- any later
-  // text-width change (a label default-aligns growing from a fixed left
-  // edge) then shifts the digits sideways instead of staying put. Locking
-  // the label to the button's full width and centering the *text* inside
-  // it keeps the digits stationary regardless of content width.
-  lv_obj_set_width(ui->chronograph_label_show, lv_pct(100));
-  lv_obj_set_style_text_align(ui->chronograph_label_show, LV_TEXT_ALIGN_CENTER, 0);
-  lv_obj_center(ui->chronograph_label_show);
   static lv_style_t style_show;
   lv_style_init(&style_show);
   lv_style_set_border_width(&style_show, 2);
   lv_style_set_border_color(&style_show, lv_color_black());
   lv_obj_add_style(ui->chronograph_btn_show, &style_show, LV_PART_MAIN);
+
+  // HH:MM:SS:CS as four separate fixed-width fields (see their declaration
+  // above for why) in a centered flex row, rather than one label holding
+  // the whole string.
+  lv_obj_set_flex_flow(ui->chronograph_btn_show, LV_FLEX_FLOW_ROW);
+  lv_obj_set_flex_align(ui->chronograph_btn_show, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+
+  static const lv_coord_t field_w = 34;
+  static const lv_coord_t colon_w = 12;
+
+  chronograph_label_hh = lv_label_create(ui->chronograph_btn_show);
+  lv_obj_set_width(chronograph_label_hh, field_w);
+  lv_obj_set_style_text_align(chronograph_label_hh, LV_TEXT_ALIGN_CENTER, 0);
+  lv_label_set_text(chronograph_label_hh, "00");
+
+  lv_obj_t *colon1 = lv_label_create(ui->chronograph_btn_show);
+  lv_obj_set_width(colon1, colon_w);
+  lv_obj_set_style_text_align(colon1, LV_TEXT_ALIGN_CENTER, 0);
+  lv_label_set_text(colon1, ":");
+
+  chronograph_label_mm = lv_label_create(ui->chronograph_btn_show);
+  lv_obj_set_width(chronograph_label_mm, field_w);
+  lv_obj_set_style_text_align(chronograph_label_mm, LV_TEXT_ALIGN_CENTER, 0);
+  lv_label_set_text(chronograph_label_mm, "00");
+
+  lv_obj_t *colon2 = lv_label_create(ui->chronograph_btn_show);
+  lv_obj_set_width(colon2, colon_w);
+  lv_obj_set_style_text_align(colon2, LV_TEXT_ALIGN_CENTER, 0);
+  lv_label_set_text(colon2, ":");
+
+  chronograph_label_ss = lv_label_create(ui->chronograph_btn_show);
+  lv_obj_set_width(chronograph_label_ss, field_w);
+  lv_obj_set_style_text_align(chronograph_label_ss, LV_TEXT_ALIGN_CENTER, 0);
+  lv_label_set_text(chronograph_label_ss, "00");
+
+  lv_obj_t *colon3 = lv_label_create(ui->chronograph_btn_show);
+  lv_obj_set_width(colon3, colon_w);
+  lv_obj_set_style_text_align(colon3, LV_TEXT_ALIGN_CENTER, 0);
+  lv_label_set_text(colon3, ":");
+
+  chronograph_label_cs = lv_label_create(ui->chronograph_btn_show);
+  lv_obj_set_width(chronograph_label_cs, field_w);
+  lv_obj_set_style_text_align(chronograph_label_cs, LV_TEXT_ALIGN_CENTER, 0);
+  lv_label_set_text(chronograph_label_cs, "00");
 
   ui->chronograph_imgbtn_play = lv_imgbtn_create(ui->chronograph);
   lv_obj_set_size(ui->chronograph_imgbtn_play, 60, 60);

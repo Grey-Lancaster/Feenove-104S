@@ -13,7 +13,10 @@ typedef struct lvgl_chronograph
   lv_obj_t *chronograph_imgbtn_stop;
   lv_obj_t *chronograph_btn_show;
 
-  lv_obj_t *chronograph_label_show;
+  // Time readout is four separate fixed-width field labels
+  // (chronograph_label_hh/mm/ss/cs, file-scope statics in
+  // chronograph_ui.cpp) rather than one member here -- see their
+  // declaration in that file for why.
   lv_timer_t *chronograph_timer;
 }lvgl_chronograph_ui;
 
