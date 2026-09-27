@@ -42,3 +42,20 @@ fixed the same way; see those chapters' READMEs for the full explanation.
   empty string too, not just `NULL` (the SD-listing helper never actually
   returns `NULL`, so the original check was dead code and the screen just
   went blank instead of showing the fallback).
+
+## Bug fixed: stray scrollbar arcs at screen edges
+
+Every screen root here (`main`, `picture`, `chronograph`, `ws2812`) is a
+plain `lv_obj_create(NULL)`, which is scrollable by default in LVGL --
+this showed as small stray arcs at the screen edges on hardware, visible
+on both the launcher screen and the chronograph screen. `music_ui.cpp`
+already disabled this for its own screen; applied the same
+`lv_obj_clear_flag(..., LV_OBJ_FLAG_SCROLLABLE)` fix to the other four.
+
+## Bug fixed: chronograph display jumping
+
+Same fix as `15_Lvgl_Timer` -- the elapsed-time readout is now four
+separate fixed-width field labels in a centered flex row rather than one
+auto-sizing label, since a first attempt (zero-padding + a single
+centered label) still wobbled a few pixels per tick on this project's
+proportional font.

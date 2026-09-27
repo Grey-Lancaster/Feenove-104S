@@ -112,7 +112,14 @@ static void main_imgbtn_music_event_handler(lv_event_t *event) {
 void setup_scr_main(lvgl_main_ui *ui) {
   // Write codes main
   ui->main = lv_obj_create(NULL);
-  
+  // Root screens default to scrollable in LVGL; this one's buttons are
+  // placed with absolute positions that sit right at (or, with rounding,
+  // fractionally past) the object's edge, which is enough for LVGL to
+  // decide the content overflows and draw a scrollbar -- seen on hardware
+  // as a small stray arc at the screen edge. music_ui.cpp/echo_ui.cpp
+  // already disable this for their own screens; doing the same here.
+  lv_obj_clear_flag(ui->main, LV_OBJ_FLAG_SCROLLABLE);
+
   static lv_style_t bg_style;
   lv_style_init(&bg_style);
   lv_style_set_bg_color(&bg_style, lv_color_hex(0xffffff));

@@ -165,6 +165,10 @@ void setup_scr_chronograph(lvgl_chronograph_ui *ui)
 {
   // Write codes picture
   ui->chronograph = lv_obj_create(NULL);
+  // Root screens default to scrollable in LVGL, which shows as a stray
+  // arc at the screen edge if any child sits at/past the object's edge --
+  // music_ui.cpp/echo_ui.cpp already disable this for their own screens.
+  lv_obj_clear_flag(ui->chronograph, LV_OBJ_FLAG_SCROLLABLE);
   lv_coord_t screen_width = lv_obj_get_width(ui->chronograph);
   lv_coord_t screen_height = lv_obj_get_height(ui->chronograph);
 

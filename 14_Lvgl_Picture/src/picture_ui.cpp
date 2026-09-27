@@ -65,6 +65,10 @@ static void picture_imgbtn_home_event_handler(lv_event_t *e) {
 void setup_scr_picture(lvgl_picture_ui *ui){
 	//Write codes picture
 	ui->picture = lv_obj_create(NULL);
+  // Root screens default to scrollable in LVGL, which shows as a stray
+  // arc at the screen edge if any child sits at/past the object's edge --
+  // music_ui.cpp/echo_ui.cpp already disable this for their own screens.
+  lv_obj_clear_flag(ui->picture, LV_OBJ_FLAG_SCROLLABLE);
 
   static lv_style_t bg_style;
   lv_style_init(&bg_style);

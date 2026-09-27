@@ -16,3 +16,11 @@ scaled from the 2.8" board's.
 
 Images themselves are read from the SD card at runtime (not baked into
 flash), so no new image assets were needed for this port.
+
+## Bug fixed: stray scrollbar arc at screen edge
+
+This screen's root object (`lv_obj_create(NULL)`) is scrollable by
+default in LVGL, and showed a small stray arc at the screen edge on
+hardware -- `17_Lvgl_Music`/`17_Lvgl_Echo` already disable this for their
+own screens; applied the same `lv_obj_clear_flag(ui->picture,
+LV_OBJ_FLAG_SCROLLABLE)` fix here.

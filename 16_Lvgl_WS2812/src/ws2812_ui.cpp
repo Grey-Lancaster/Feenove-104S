@@ -87,6 +87,10 @@ void setup_scr_ws2812(lvgl_ws2812_ui *ui) {
 
   //Write codes picture
   ui->ws2812 = lv_obj_create(NULL);
+  // Root screens default to scrollable in LVGL, which shows as a stray
+  // arc at the screen edge if any child sits at/past the object's edge --
+  // music_ui.cpp/echo_ui.cpp already disable this for their own screens.
+  lv_obj_clear_flag(ui->ws2812, LV_OBJ_FLAG_SCROLLABLE);
   static lv_style_t bg_style;
   lv_style_init(&bg_style);
   lv_style_set_bg_color(&bg_style, lv_color_hex(0xffffff));
