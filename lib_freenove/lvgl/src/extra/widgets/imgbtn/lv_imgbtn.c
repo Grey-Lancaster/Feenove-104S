@@ -163,6 +163,16 @@ static void lv_imgbtn_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj
 {
     LV_UNUSED(class_p);
     lv_imgbtn_t * imgbtn = (lv_imgbtn_t *)obj;
+
+    /* Base lv_obj defaults to scrollable (see lv_obj_constructor); unlike
+     * lv_btn, this widget never clears it. A button's image content sitting
+     * even a pixel past its declared size is then read as overflow, drawing
+     * a small scrollbar arc at the widget's edge -- seen on hardware on
+     * every imgbtn across every custom screen (chapters 14-18), not just
+     * screen roots (see chronograph_ui.cpp/main_ui.cpp's own
+     * LV_OBJ_FLAG_SCROLLABLE fix for those, which didn't touch this). */
+    lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
+
     /*Initialize the allocated 'ext'*/
     lv_memset_00((void *)imgbtn->img_src_mid, sizeof(imgbtn->img_src_mid));
     lv_memset_00(imgbtn->img_src_left, sizeof(imgbtn->img_src_left));
