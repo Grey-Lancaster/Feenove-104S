@@ -39,9 +39,9 @@ the 2.8" board's ILI9341 config.
 | 15.1 | `15_Lvgl_Timer/` | LVGL chronograph/stopwatch UI | Ported (genuine per-board layout) — not yet flashed |
 | 16.1 | `16_Lvgl_WS2812/` | LVGL-driven WS2812 color picker | Ported (genuine per-board layout) — not yet flashed |
 | 17.1 | `17_Lvgl_Music/` | LVGL music player UI | Ported (genuine per-board layout, incl. its documented audio bugfixes) — not yet flashed |
-| 17.2 | `17_Lvgl_Echo/` | LVGL mic record + playback (unofficial) | Not yet ported |
+| 17.2 | `17_Lvgl_Echo/` | LVGL mic record + playback (unofficial) | Ported (no per-board layout needed — screen uses relative LVGL alignment) — not yet flashed |
 | 18.1 | `18_Lvgl_Multifunctionality/` | All LVGL screens combined | Not yet ported (genuine per-board layout, many files) |
-| 19.1 | `19_LVGL_Arduino/` | Stock LVGL widgets demo | Not yet ported (genuine per-board resolution) |
+| 19.1 | `19_LVGL_Arduino/` | Stock LVGL widgets demo | Ported (genuine per-board resolution) — not yet flashed |
 
 Chapters marked "identical to FNK0104B" have no display/resolution
 dependency and cross-checked byte-for-byte against Freenove's official
