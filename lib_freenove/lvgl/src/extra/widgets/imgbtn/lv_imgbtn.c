@@ -296,7 +296,20 @@ static void draw_main(lv_event_t * e)
             coords_part.x2 = coords_part.x1 + header.w - 1;
             coords_part.y2 = coords_part.y1 + header.h - 1;
 
-            for(i = coords_part.x1; i < (lv_coord_t)(clip_area_center.x2 + header.w - 1); i += header.w) {
+            /* Was `i < clip_area_center.x2 + header.w - 1`, which always
+             * attempts one extra tile past the button's own width -- even
+             * when the mid image exactly fills the button (e.g. a 60x60
+             * image in a 60x60 button, as every custom imgbtn in this
+             * project's chapters uses via GUI Guider's single-image
+             * lv_img_set_src helper, which sets only img_src_mid and
+             * leaves left/right NULL). That extra tile is drawn starting
+             * exactly at the clip edge and is meant to be clipped away
+             * entirely, but a thin sliver leaks through -- for a circular
+             * icon, that reads on hardware as a small stray arc just past
+             * the button's right edge. Stopping once a tile's start would
+             * be at or past the clip boundary avoids ever drawing that
+             * doomed-to-be-clipped extra tile in the first place. */
+            for(i = coords_part.x1; i <= clip_area_center.x2; i += header.w) {
                 lv_draw_img(draw_ctx, &img_dsc, &coords_part, src);
                 coords_part.x1 = coords_part.x2 + 1;
                 coords_part.x2 += header.w;
