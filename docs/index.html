@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FNK0104S Touch Tutorial Flasher</title>
+<link rel="icon" href="favicon.ico" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <img class="hero-icon" src="logo.png" alt="Feenove-104S" />
+    <h1 id="pageTitle">FNK0104S Touch Tutorial Flasher</h1>
+    <p id="pageSubtitle" class="subtitle">Pick a tutorial chapter and flash it straight from this page. No software to install.</p>
+  </header>
+
+  <section id="unsupported" class="banner banner-warn hidden">
+    <strong>Your browser can't do this.</strong>
+    Web Serial only works in <strong>Chrome</strong> or <strong>Edge</strong> on a computer (not phone/tablet, not Safari or Firefox).
+    Open this page in Chrome or Edge and try again.
+  </section>
+
+  <main id="app" class="steps">
+
+    <section class="card step">
+      <div class="step-head">
+        <span class="step-num">1</span>
+        <h2>Pick a chapter</h2>
+      </div>
+      <p class="step-help">Each chapter is a standalone demo &mdash; flashing one replaces whatever was on the board before.</p>
+
+      <select id="chapterSelect" class="chapter-select">
+        <option value="" selected disabled>Choose a chapter&hellip;</option>
+        <optgroup label="Touch Tutorial chapters">
+        <option value="01_SerialRW" data-bin="firmware/01_SerialRW.bin">1 &mdash; Serial Read/Write</option>
+        <option value="02_LedPixel" data-bin="firmware/02_LedPixel.bin">2.1 &mdash; Onboard WS2812 RGB LED</option>
+        <option value="02_Rainbow" data-bin="firmware/02_Rainbow.bin">2.2 &mdash; WS2812 Color Wheel Animation</option>
+        <option value="03_Button_RGB" data-bin="firmware/03_Button_RGB.bin">3.1 &mdash; Button + RGB LED</option>
+        <option value="04_Button_Interrupt_UART" data-bin="firmware/04_Button_Interrupt_UART.bin">4.1 &mdash; Button Interrupt + Debounce</option>
+        <option value="05_Battery_Voltage" data-bin="firmware/05_Battery_Voltage.bin">5.1 &mdash; Battery ADC Reading</option>
+        <option value="06_SDMMC_Test" data-bin="firmware/06_SDMMC_Test.bin">6.1 &mdash; SD Card File I/O</option>
+        <option value="07_Music" data-bin="firmware/07_Music.bin">7.1 &mdash; MP3 Playback (ES8311 Codec)</option>
+        <option value="07_Echo" data-bin="firmware/07_Echo.bin">7.2 &mdash; Mic Record + Playback Loopback</option>
+        <option value="08_BLE_USART" data-bin="firmware/08_BLE_USART.bin">8.1 &mdash; BLE UART Bridge</option>
+        <option value="08_BLE_RGB" data-bin="firmware/08_BLE_RGB.bin">8.2 &mdash; BLE-Controlled RGB LED</option>
+        <option value="09_WiFi_Web_LED" data-bin="firmware/09_WiFi_Web_LED.bin">9.1 &mdash; WiFi Web Server LED Control</option>
+        <option value="10_TFT_Rainbow" data-bin="firmware/10_TFT_Rainbow.bin">10.1 &mdash; Raw TFT Drawing/Fonts</option>
+        <option value="10_Flash_Jpg_DMA" data-bin="firmware/10_Flash_Jpg_DMA.bin">10.2 &mdash; JPEG Decode From Flash</option>
+        <option value="11_Touch" data-bin="firmware/11_Touch.bin">11.1 &mdash; FT6336U Capacitive Touch</option>
+        <option value="12_TFT_Touch_Draw" data-bin="firmware/12_TFT_Touch_Draw.bin">12.1 &mdash; Touch-Driven Drawing</option>
+        <option value="13_LVGL" data-bin="firmware/13_LVGL.bin">13.1 &mdash; Baseline LVGL Setup</option>
+        <option value="14_Lvgl_Picture" data-bin="firmware/14_Lvgl_Picture.bin">14.1 &mdash; LVGL Image Viewer, SD Card</option>
+        <option value="15_Lvgl_Timer" data-bin="firmware/15_Lvgl_Timer.bin">15.1 &mdash; LVGL Chronograph/Stopwatch</option>
+        <option value="16_Lvgl_WS2812" data-bin="firmware/16_Lvgl_WS2812.bin">16.1 &mdash; LVGL WS2812 Color Picker</option>
+        <option value="17_Lvgl_Music" data-bin="firmware/17_Lvgl_Music.bin">17.1 &mdash; LVGL Music Player UI</option>
+        <option value="17_Lvgl_Echo" data-bin="firmware/17_Lvgl_Echo.bin">17.2 &mdash; LVGL Mic Record + Playback (unofficial)</option>
+        <option value="18_Lvgl_Multifunctionality" data-bin="firmware/18_Lvgl_Multifunctionality.bin">18.1 &mdash; All LVGL Screens Combined</option>
+        <option value="19_LVGL_Arduino" data-bin="firmware/19_LVGL_Arduino.bin">19.1 &mdash; Stock LVGL Widgets Demo</option>
+        </optgroup>
+      </select>
+      <p id="chapterStatus" class="step-help" style="margin-top: 10px; margin-bottom: 0;"></p>
+    </section>
+
+    <section class="card step">
+      <div class="step-head">
+        <span class="step-num">2</span>
+        <h2>Connect your board</h2>
+      </div>
+      <p class="step-help">Plug the device into a USB port, then click connect and pick it from the list. This requires the board to be in bootloader mode (it's what actually flashes it) &mdash; to just read logs from a board that's already running normally, use <strong>View Device Logs</strong> below instead, no bootloader mode needed.</p>
+      <button id="connectBtn" class="btn btn-primary" disabled>Connect Device</button>
+      <span id="connectStatus" class="status"></span>
+
+      <details class="advanced">
+        <summary>Advanced options</summary>
+        <div class="advanced-body">
+          <label>
+            Baud rate
+            <select id="baudRate">
+              <option value="115200">115200 (safest)</option>
+              <option value="230400">230400</option>
+              <option value="460800" selected>460800 (recommended)</option>
+              <option value="921600">921600 (fastest)</option>
+            </select>
+          </label>
+          <label class="checkbox-row">
+            <input type="checkbox" id="eraseAll" />
+            Erase entire flash first
+          </label>
+        </div>
+      </details>
+    </section>
+
+    <section class="card step">
+      <div class="step-head">
+        <span class="step-num">3</span>
+        <h2>Flash it</h2>
+      </div>
+      <p class="step-help">This takes a minute or two. Don't unplug the device or close this tab while it runs.</p>
+      <button id="flashBtn" class="btn btn-primary" disabled>Flash Firmware</button>
+
+      <div id="progressWrap" class="progress-wrap hidden">
+        <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+        <div id="progressLabel" class="progress-label">0%</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="step-head">
+        <h2>Log</h2>
+        <button id="viewLogsBtn" class="btn btn-ghost">View Device Logs</button>
+        <button id="stopLogsBtn" class="btn btn-ghost hidden">Stop Logs</button>
+        <button id="clearLogBtn" class="btn btn-ghost">Clear</button>
+      </div>
+      <p class="step-help" style="margin: -4px 0 10px;">Works on a board that's already running normally &mdash; no bootloader mode or flashing required, just a plain serial connection.</p>
+      <pre id="log" class="log"></pre>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <span id="footerNote">Built with <a href="https://github.com/espressif/esptool-js" target="_blank" rel="noopener">esptool-js</a>. Chapter source: <a href="https://github.com/Grey-Lancaster/Feenove-104S" target="_blank" rel="noopener">Feenove-104S</a>.</span>
+  </footer>
+
+</div>
+
+<dialog id="noPortDialog" class="modal">
+  <h2>Aw crap, no port selected</h2>
+  <p>
+    If you didn't select a port because you didn't see your device listed, try
+    the following steps:
+  </p>
+  <ol>
+    <li>
+      Make sure the device is connected to this computer (the one running the
+      browser that shows this page).
+    </li>
+    <li>Most devices have a tiny light when powered on &mdash; make sure it's on.</li>
+    <li>
+      Make sure the USB cable you're using can be used for data, not a
+      power-only cable.
+    </li>
+    <li id="linuxDriverNote" class="hidden">
+      On Linux, make sure your user is part of the <code>dialout</code> group
+      so it has permission to access the device:
+      <code class="block">sudo usermod -a -G dialout YourUserName</code>
+      You may need to log out and back in (or reboot) for that to take effect.
+    </li>
+    <li>
+      Make sure you have the right drivers installed. This board uses native
+      USB (CDC), so it usually needs no separate driver &mdash; but the port
+      number will change between bootloader mode and normal running mode,
+      which is expected.
+    </li>
+  </ol>
+  <div class="modal-actions">
+    <button id="noPortCancelBtn" class="btn btn-ghost">Cancel</button>
+    <button id="noPortRetryBtn" class="btn btn-primary">Try Again</button>
+  </div>
+</dialog>
+
+<dialog id="connectErrorDialog" class="modal">
+  <h2>Aw crap, couldn't connect</h2>
+  <p>
+    A port was selected, but the device didn't respond. A few things to try:
+  </p>
+  <ol>
+    <li>
+      Some boards need the <strong>BOOT</strong> (or <strong>FLASH</strong>)
+      button held down while connecting. Hold it, click <strong>Try
+      Again</strong>, and release once the log shows "Connected."
+    </li>
+    <li>
+      Make sure nothing else has the port open &mdash; close the Arduino
+      Serial Monitor, PlatformIO, or any other browser tab using it.
+    </li>
+    <li>Try a slower baud rate under <strong>Advanced options</strong>.</li>
+    <li>Unplug the USB cable, plug it back in, and try again.</li>
+  </ol>
+  <p class="modal-error-detail">Error: <code id="connectErrorDetail"></code></p>
+  <div class="modal-actions">
+    <button id="connectErrorCancelBtn" class="btn btn-ghost">Cancel</button>
+    <button id="connectErrorRetryBtn" class="btn btn-primary">Try Again</button>
+  </div>
+</dialog>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
