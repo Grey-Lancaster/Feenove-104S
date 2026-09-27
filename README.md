@@ -16,9 +16,8 @@ the 2.8" board's ILI9341 config.
 
 ## Projects
 
-- `10_Flash_Jpg_DMA/` — decodes and displays a JPEG baked into flash;
-  currently showing a placeholder image while the real fox logo artwork is
-  pending (see that chapter's README)
+- `10_Flash_Jpg_DMA/` — decodes and displays "The Grey Fox" logo, a JPEG
+  baked into flash (see that chapter's README)
 
 Further chapters will be ported on request the same way — see the FNK0104B
 repo for the full 19-chapter list this one is expected to eventually mirror.

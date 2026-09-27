@@ -11,18 +11,21 @@ what differs for this board is `../common.ini`'s `tft_base` env (ST7796
 driver, different pins/SPI speed than the 2.8" ILI9341 board) and the
 embedded image, which is sized for this panel's 320x480 resolution.
 
-## Current status: placeholder image
+## The logo
 
-`src/fox_logo.h` currently holds Freenove's own stock demo JPEG (from their
-official repo's FNK0104S/N `panda.h` branch) rather than the actual fox
-logo — it's there so this chapter builds and can be flashed to confirm the
-display path works on real hardware before the real artwork is dropped in.
+`src/fox_logo.h` holds "The Grey Fox" logo (Est. 1967), converted from the
+1254x1254 source artwork: resized to 320px wide (full panel width, keeping
+its native 1:1 aspect ratio) and centered vertically on a 320x480 white
+canvas matching the logo's own background, then re-encoded as a baseline
+JPEG (quality 90, ~35.6KB) — `TJpg_Decoder` requires baseline, not
+progressive, JPEG data. Round-tripped the embedded bytes back through a
+JPEG decoder to confirm the array matches the source exactly before
+committing.
 
-To swap in the real logo: convert it to a JPEG byte array in the same
-`const unsigned char fox_logo[] PROGMEM = { ... };` format (Freenove's own
-"Freenove Image Tool", bundled in their official repo, does this crop/encode
-step for you) and replace the array in `src/fox_logo.h`, keeping the name
-`fox_logo`.
+To regenerate with new artwork: resize/pad to 320x480 the same way (Pillow,
+or Freenove's own "Freenove Image Tool" bundled in their official repo),
+save as a baseline JPEG, and re-emit the `const unsigned char fox_logo[]
+PROGMEM = { ... };` array from those bytes.
 
 ## Build
 
