@@ -249,13 +249,13 @@ void setup_scr_chronograph(lvgl_chronograph_ui *ui)
   lv_label_set_text(chronograph_label_cs, "00");
 
   ui->chronograph_imgbtn_play = lv_imgbtn_create(ui->chronograph);
-    lv_obj_set_size(ui->chronograph_imgbtn_play, 80, 80);
+    lv_obj_set_size(ui->chronograph_imgbtn_play, 60, 60);  // matches SELECT_IMG_PAUSE/PLAYING (lv_img.h) -- was 80, mismatch left a stray arc leaking past the button edge
   lv_img_set_src(ui->chronograph_imgbtn_play, &img_pause);
   lv_obj_align_to(ui->chronograph_imgbtn_play, ui->chronograph_btn_show, LV_ALIGN_OUT_BOTTOM_MID, -(screen_width - 120) / 3, (screen_height - 180) / 4);
   lv_obj_add_style(ui->chronograph_imgbtn_play, &style_pr, LV_STATE_PRESSED);
 
   ui->chronograph_imgbtn_stop = lv_imgbtn_create(ui->chronograph);
-    lv_obj_set_size(ui->chronograph_imgbtn_stop, 80, 80);
+    lv_obj_set_size(ui->chronograph_imgbtn_stop, 60, 60);  // matches SELECT_IMG_STOP (lv_img.h) -- was 80, mismatch left a stray arc leaking past the button edge
   lv_img_set_src(ui->chronograph_imgbtn_stop, &img_stop);
   lv_obj_align_to(ui->chronograph_imgbtn_stop, ui->chronograph_btn_show, LV_ALIGN_OUT_BOTTOM_MID, (screen_width - 120) / 3, (screen_height - 180) / 4);
   lv_obj_add_style(ui->chronograph_imgbtn_stop, &style_pr, LV_STATE_PRESSED);

@@ -145,28 +145,28 @@ void setup_scr_main(lvgl_main_ui *ui) {
   //Write codes main_imgbtn_picture
   ui->main_imgbtn_picture = lv_imgbtn_create(ui->main);
     lv_obj_set_pos(ui->main_imgbtn_picture, 30, 200);
-    lv_obj_set_size(ui->main_imgbtn_picture, 100, 100);
+    lv_obj_set_size(ui->main_imgbtn_picture, 80, 80);  // matches SELECT_IMG_PICTURE (lv_img.h) -- was 100, mismatch left a stray arc leaking past the button edge
   lv_img_set_src(ui->main_imgbtn_picture, &img_picture);
   lv_obj_add_style(ui->main_imgbtn_picture, &style_pr, LV_STATE_PRESSED);  //Triggered when the button is pressed
 
   //Write codes main_imgbtn_timer
   ui->main_imgbtn_timer = lv_imgbtn_create(ui->main);
     lv_obj_set_pos(ui->main_imgbtn_timer, 190, 200);
-    lv_obj_set_size(ui->main_imgbtn_timer, 100, 100);
+    lv_obj_set_size(ui->main_imgbtn_timer, 80, 80);  // matches SELECT_IMG_TIMER (lv_img.h) -- was 100, mismatch left a stray arc leaking past the button edge
   lv_img_set_src(ui->main_imgbtn_timer, &img_timer);
   lv_obj_add_style(ui->main_imgbtn_timer, &style_pr, LV_STATE_PRESSED);  //Triggered when the button is pressed
 
   //Write codes main_imgbtn_ws2812
   ui->main_imgbtn_ws2812 = lv_imgbtn_create(ui->main);
     lv_obj_set_pos(ui->main_imgbtn_ws2812, 30, 330);
-    lv_obj_set_size(ui->main_imgbtn_ws2812, 100, 100);
+    lv_obj_set_size(ui->main_imgbtn_ws2812, 80, 80);  // matches SELECT_IMG_LED (lv_img.h) -- was 100, mismatch left a stray arc leaking past the button edge
   lv_img_set_src(ui->main_imgbtn_ws2812, &img_led);
   lv_obj_add_style(ui->main_imgbtn_ws2812, &style_pr, LV_STATE_PRESSED);  //Triggered when the button is pressed
 
   //Write codes main_imgbtn_music
   ui->main_imgbtn_music = lv_imgbtn_create(ui->main);
     lv_obj_set_pos(ui->main_imgbtn_music, 190, 330);
-    lv_obj_set_size(ui->main_imgbtn_music, 100, 100);
+    lv_obj_set_size(ui->main_imgbtn_music, 80, 80);  // matches SELECT_IMG_MUSIC (lv_img.h) -- was 100, mismatch left a stray arc leaking past the button edge
   lv_img_set_src(ui->main_imgbtn_music, &img_music);
   lv_obj_add_style(ui->main_imgbtn_music, &style_pr, LV_STATE_PRESSED);  //Triggered when the button is pressed
 

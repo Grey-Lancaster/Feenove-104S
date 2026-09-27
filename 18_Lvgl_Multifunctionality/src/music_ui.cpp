@@ -281,13 +281,13 @@ void setup_scr_music(lvgl_music_ui *ui) {
 
   ui->music_imgbtn_play = lv_imgbtn_create(ui->music);
     lv_obj_set_pos(ui->music_imgbtn_play, 80, 360);
-    lv_obj_set_size(ui->music_imgbtn_play, 80, 80);
+    lv_obj_set_size(ui->music_imgbtn_play, 60, 60);  // matches SELECT_IMG_PAUSE/PLAYING (lv_img.h) -- was 80 (chapter 17's own size, but chapter 18's lv_img.h declares these at 60), mismatch left a stray arc leaking past the button edge
   lv_img_set_src(ui->music_imgbtn_play, &img_pause);
   lv_obj_add_style(ui->music_imgbtn_play, &style_pr, LV_STATE_PRESSED);//Triggered when the button is pressed
 
   ui->music_imgbtn_stop = lv_imgbtn_create(ui->music);
     lv_obj_set_pos(ui->music_imgbtn_stop, 160, 360);
-    lv_obj_set_size(ui->music_imgbtn_stop, 80, 80);
+    lv_obj_set_size(ui->music_imgbtn_stop, 60, 60);  // matches SELECT_IMG_STOP (lv_img.h) -- was 80 (chapter 17's own size, but chapter 18's lv_img.h declares this at 60), mismatch left a stray arc leaking past the button edge
   lv_img_set_src(ui->music_imgbtn_stop, &img_stop);
   lv_obj_add_style(ui->music_imgbtn_stop, &style_pr, LV_STATE_PRESSED);//Triggered when the button is pressed
 
