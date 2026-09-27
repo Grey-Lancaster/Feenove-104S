@@ -36,8 +36,8 @@ the 2.8" board's ILI9341 config.
 | 12.1 | `12_TFT_Touch_Draw/` | Touch-driven drawing on TFT | Ported (genuine per-board layout) — not yet flashed |
 | 13.1 | `13_LVGL/` | Baseline LVGL setup | Ported (genuine per-board resolution) — not yet flashed |
 | 14.1 | `14_Lvgl_Picture/` | LVGL image viewer from SD card | Not yet ported (genuine per-board layout + image asset) |
-| 15.1 | `15_Lvgl_Timer/` | LVGL chronograph/stopwatch UI | Not yet ported (genuine per-board layout) |
-| 16.1 | `16_Lvgl_WS2812/` | LVGL-driven WS2812 color picker | Not yet ported (genuine per-board layout) |
+| 15.1 | `15_Lvgl_Timer/` | LVGL chronograph/stopwatch UI | Ported (genuine per-board layout) — not yet flashed |
+| 16.1 | `16_Lvgl_WS2812/` | LVGL-driven WS2812 color picker | Ported (genuine per-board layout) — not yet flashed |
 | 17.1 | `17_Lvgl_Music/` | LVGL music player UI | Not yet ported (genuine per-board layout) |
 | 17.2 | `17_Lvgl_Echo/` | LVGL mic record + playback (unofficial) | Not yet ported |
 | 18.1 | `18_Lvgl_Multifunctionality/` | All LVGL screens combined | Not yet ported (genuine per-board layout, many files) |
