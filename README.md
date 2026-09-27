@@ -16,28 +16,68 @@ the 2.8" board's ILI9341 config.
 
 ## Projects
 
-- `10_Flash_Jpg_DMA/` — decodes and displays "The Grey Fox" logo, a JPEG
-  baked into flash (see that chapter's README)
+| Chapter | Folder | Covers | Status |
+|---|---|---|---|
+| 1 | `01_SerialRW/` | Serial read/write | Ported (identical to FNK0104B — no board-specific pins in this chapter) |
+| 2.1 | `02_LedPixel/` | Onboard WS2812 RGB LED | Ported (identical to FNK0104B) |
+| 2.2 | `02_Rainbow/` | WS2812 color wheel animation | Ported (identical to FNK0104B) |
+| 3.1 | `03_Button_RGB/` | Button input + RGB LED | Ported (identical to FNK0104B) |
+| 4.1 | `04_Button_Interrupt_UART/` | Button interrupt + debounce | Ported (identical to FNK0104B) |
+| 5.1 | `05_Battery_Voltage/` | Battery ADC reading | Ported (identical to FNK0104B) |
+| 6.1 | `06_SDMMC_Test/` | SD card (SD_MMC) file I/O | Ported (identical to FNK0104B) |
+| 7.1 | `07_Music/` | MP3 playback via ES8311 codec | Ported (identical to FNK0104B, incl. its documented audio bugfixes) |
+| 7.2 | `07_Echo/` | Mic record + playback loopback | Ported (identical to FNK0104B, incl. its documented I2S bugfixes) |
+| 8.1 | `08_BLE_USART/` | BLE UART bridge | Ported (identical to FNK0104B) |
+| 8.2 | `08_BLE_RGB/` | BLE-controlled RGB LED | Ported, with one pin correction — see chapter README |
+| 9.1 | `09_WiFi_Web_LED/` | WiFi web server LED control | Ported (identical to FNK0104B) |
+| 10.1 | `10_TFT_Rainbow/` | Raw TFT_eSPI drawing/fonts | Ported (genuine per-board layout, 480x320 landscape vs 320x240) — not yet flashed |
+| 10.2 | `10_Flash_Jpg_DMA/` | JPEG decode from flash to TFT | **Ported and confirmed working on hardware** — displays "The Grey Fox" logo |
+| 11.1 | `11_Touch/` | FT6336U capacitive touch (raw) | Ported (identical to FNK0104B) |
+| 12.1 | `12_TFT_Touch_Draw/` | Touch-driven drawing on TFT | Ported (genuine per-board layout) — not yet flashed |
+| 13.1 | `13_LVGL/` | Baseline LVGL setup | Ported (genuine per-board resolution) — not yet flashed |
+| 14.1 | `14_Lvgl_Picture/` | LVGL image viewer from SD card | Ported (genuine per-board layout; images load from SD at runtime, no baked-in asset needed) — not yet flashed |
+| 15.1 | `15_Lvgl_Timer/` | LVGL chronograph/stopwatch UI | Ported (genuine per-board layout) — not yet flashed |
+| 16.1 | `16_Lvgl_WS2812/` | LVGL-driven WS2812 color picker | Ported (genuine per-board layout) — not yet flashed |
+| 17.1 | `17_Lvgl_Music/` | LVGL music player UI | Ported (genuine per-board layout, incl. its documented audio bugfixes) — not yet flashed |
+| 17.2 | `17_Lvgl_Echo/` | LVGL mic record + playback (unofficial) | Ported (no per-board layout needed — screen uses relative LVGL alignment) — not yet flashed |
+| 18.1 | `18_Lvgl_Multifunctionality/` | All LVGL screens combined | Ported (genuine per-board layout, many files; new 320x320 fallback logo image) — not yet flashed |
+| 19.1 | `19_LVGL_Arduino/` | Stock LVGL widgets demo | Ported (genuine per-board resolution) — not yet flashed |
 
-Further chapters will be ported on request the same way — see the FNK0104B
-repo for the full 19-chapter list this one is expected to eventually mirror.
+All 23 chapters are now ported. Chapters marked "identical to FNK0104B"
+have no display/resolution dependency and were cross-checked byte-for-byte
+against Freenove's official per-board `#ifdef` branches: the FNK0104S and
+FNK0104B code paths are provably the same for these (only the
+FNK0104N/3.5" variant differs), so these were ported by direct copy. The
+rest all touch the TFT/LVGL and genuinely differ (320x480 vs 240x320
+layout, rotation, image assets) — those layouts were extracted from
+Freenove's own official FNK0104S-specific code where it exists, or
+adapted directly where it doesn't (chapter 17.2).
+
+Only chapter 10.2 has actually been flashed and confirmed working on real
+FNK0104S hardware so far — everything else compiles against the same
+board config but hasn't been verified on the physical board yet.
 
 ## Shared across chapters
 
 - `boards/ESP32-S3-WROOM-1-N16R8.json` — board def, carried over from the
   FNK0104B project on the assumption the module is the same across the
-  FNK0104 line (unconfirmed for this specific board — see each chapter's
-  README).
+  FNK0104 line. **Confirmed correct**: chapter 10.2 boots and runs fine on
+  real FNK0104S hardware with this board def.
 - `common.ini` — shared PlatformIO environments (`base` → `tft_base`),
   translated from Freenove's own `Libraries/FNK0104S/TFT_eSPI_Setups_v1.2.zip`
   setup header rather than the FNK0104B board's.
 - `lib_freenove/TJpg_Decoder` — vendored from the FNK0104B project; this
   library is board-agnostic (same version ships in both boards' official
   library bundles).
+- `lib_freenove/ESP32-audioI2S`, `FT6336U_CTP_Controller`,
+  `Freenove_WS2812_Lib_for_ESP32` — also vendored from the FNK0104B
+  project for the same reason: these libraries are board-agnostic, only
+  the pins passed into them differ (and for every chapter ported so far,
+  don't even differ from FNK0104B).
 
 Build any chapter with:
 ```
-cd 10_Flash_Jpg_DMA
+cd 01_SerialRW
 pio run
 ```
 
