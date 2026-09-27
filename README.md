@@ -40,3 +40,11 @@ Build any chapter with:
 cd 10_Flash_Jpg_DMA
 pio run
 ```
+
+## Flashing
+
+`docs/` is a browser-based flasher (Web Serial, no install) — see
+`docs/README.md` for how to build and add a chapter's merged `.bin`, and
+for the build-on-greyhound/flash-on-boron split this repo uses. Once
+GitHub Pages is enabled for this repo, it'll be live the same way the
+[FNK0104B flasher](https://grey-lancaster.github.io/Freenove104b/) is.
